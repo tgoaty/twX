@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.egg-info/
+.eggs/
+*.log
+
+# Env & Venv
+.env
+.venv/
+env/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS system files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+
+# Pyproject cache
+*.toml.__*
+*.toml.orig
