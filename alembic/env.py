@@ -1,13 +1,14 @@
 import os
 import sys
 from logging.config import fileConfig
-
 from sqlalchemy import engine_from_config, pool
 from alembic import context
-
 from dotenv import load_dotenv
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from app.modals.base import Base
+from app.modals.user import User  # noqa: F401
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 load_dotenv()
 
@@ -23,8 +24,6 @@ if not DATABASE_URL:
 
 config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
-from app.modals.base import Base
-from app.modals.user import User
 
 target_metadata = Base.metadata
 
