@@ -43,7 +43,7 @@ async def remove_token(session: AsyncSession, refresh_token: str):
     token_data = result.scalars().first()
 
     if not token_data:
-        raise HTTPException(status_code=404, detail="Token not found")
+        raise HTTPException(status_code=400, detail="Token not found")
 
     await session.delete(token_data)
     await session.commit()
@@ -55,7 +55,7 @@ def validate_access_token(token: str):
         user_data = jwt.decode(token, JWT_ACCESS_SECRET, algorithms=["HS256"])
         return user_data
     except Exception as e:
-        raise HTTPException(status_code=404, detail=f"Token not found: {e}")
+        raise HTTPException(status_code=400, detail=f"Token not found: {e}")
 
 
 def validate_refresh_token(token: str):
@@ -63,7 +63,7 @@ def validate_refresh_token(token: str):
         user_data = jwt.decode(token, JWT_REFRESH_SECRET, algorithms=["HS256"])
         return user_data
     except Exception as e:
-        raise HTTPException(status_code=404, detail=f"Token not found: {e}")
+        raise HTTPException(status_code=400, detail=f"Token not found: {e}")
 
 
 async def find_token(session: AsyncSession, refresh_token: str):
@@ -73,6 +73,6 @@ async def find_token(session: AsyncSession, refresh_token: str):
     token_data = result.scalars().first()
 
     if not token_data:
-        raise HTTPException(status_code=404, detail="Token not found")
+        raise HTTPException(status_code=400, detail="Token not found")
 
     return token_data.refresh_token

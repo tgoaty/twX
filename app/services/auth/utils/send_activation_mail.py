@@ -53,5 +53,4 @@ async def send_activation_mail(to, link):
             password=MAIL_PASSWORD,
         )
     except Exception as e:
-        print(f"Error sending email: {e}")
-        raise
+        raise Exception(f"Failed to send activation mail: {e}")

@@ -1,12 +1,11 @@
 import uuid
 from datetime import datetime
-
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, EmailStr
 
 
 class UserDto(BaseModel):
     username: str
-    email: str
+    email: EmailStr
     sid: uuid.UUID
     is_activated: bool
     bio: str | None
@@ -18,11 +17,13 @@ class UserDto(BaseModel):
 
 
 class RegistrationRequest(BaseModel):
-    username: str
-    email: str
-    password: str
+    username: str = Field(..., min_length=5, max_length=50, description="Username")
+    email: EmailStr = Field(..., description="Valid email address")
+    password: str = Field(
+        ..., min_length=8, max_length=128, description="Password from 8 characters"
+    )
 
 
 class LoginRequest(BaseModel):
-    email: str
+    email: EmailStr
     password: str

@@ -11,14 +11,14 @@ async def login(email, password, session: AsyncSession):
     user = result.scalars().first()
 
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=400, detail="User not found")
 
     is_passwords_equals = verify_password(
         plain_password=password, hashed_password=user.hashed_password
     )
 
     if not is_passwords_equals:
-        raise HTTPException(status_code=404, detail="Password does not match")
+        raise HTTPException(status_code=400, detail="Password does not match")
 
     response = await get_user_dto_and_tokens(session, user)
     return response

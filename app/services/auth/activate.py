@@ -1,3 +1,5 @@
+from fastapi import HTTPException
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models import User
 
@@ -11,7 +13,10 @@ async def activate(activation_link: str, session: AsyncSession):
     user = result.scalars().first()
 
     if not user:
-        raise Exception(f"The activation link {activation_link} does not exist")
+        raise HTTPException(
+            status_code=400,
+            detail=f"The activation link {activation_link} does not exist",
+        )
 
     user.is_activated = True
 

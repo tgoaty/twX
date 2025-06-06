@@ -1,4 +1,6 @@
 import uuid
+
+from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models import User
@@ -12,7 +14,9 @@ async def registration(username: str, email: str, password: str, session: AsyncS
     result = await session.execute(select(User).where(User.email == email))
     existing_user = result.scalars().first()
     if existing_user:
-        raise Exception(f"User with email {email} already exists")
+        raise HTTPException(
+            status_code=400, detail="User with email {email} already exists"
+        )
 
     hashed = hash_password(password)
     activation_link = str(uuid.uuid4())
