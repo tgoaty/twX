@@ -1,6 +1,6 @@
 import uuid
 from .base import Base
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, Boolean, DateTime
 from sqlalchemy.dialects.postgresql import UUID
 
@@ -18,5 +18,5 @@ class User(Base):
     activation_link = Column(
         String,
     )
-    created_at = Column(DateTime, default=datetime.now())
-    last_active = Column(DateTime, default=datetime.now())
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    last_active = Column(DateTime, default=datetime.now(timezone.utc))

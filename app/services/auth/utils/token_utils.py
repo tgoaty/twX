@@ -1,10 +1,8 @@
 from fastapi import HTTPException
 from jose import jwt
 from datetime import datetime, timedelta, timezone
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, UUID
-
 from app.config import JWT_ACCESS_SECRET, JWT_REFRESH_SECRET
 from app.models import Token
 

@@ -1,7 +1,5 @@
 import uuid
-
 from sqlalchemy import Column, String, ForeignKey, UUID
-
 from app.models import Base
 
 

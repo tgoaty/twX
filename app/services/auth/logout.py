@@ -1,5 +1,4 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.services.auth.utils.token_utils import remove_token
 
 

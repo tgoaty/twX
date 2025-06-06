@@ -1,6 +1,6 @@
 import uuid
-
 from fastapi import HTTPException
+from pydantic import EmailStr
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models import User
@@ -10,7 +10,9 @@ from app.services.auth.utils.send_activation_mail import send_activation_mail
 from app.config import URL
 
 
-async def registration(username: str, email: str, password: str, session: AsyncSession):
+async def registration(
+    username: str, email: EmailStr, password: str, session: AsyncSession
+):
     result = await session.execute(select(User).where(User.email == email))
     existing_user = result.scalars().first()
     if existing_user:
@@ -23,7 +25,7 @@ async def registration(username: str, email: str, password: str, session: AsyncS
 
     new_user = User(
         username=username,
-        email=email,
+        email=str(email),
         hashed_password=hashed,
         activation_link=activation_link,
     )

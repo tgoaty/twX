@@ -4,7 +4,6 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 from app.config import DATABASE_URL
-
 from app.models import Base, User, Token  # noqa: F401
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))

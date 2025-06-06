@@ -1,8 +1,6 @@
 from fastapi import HTTPException
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models import User
-
 from sqlalchemy import select
 
 

@@ -1,13 +1,12 @@
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import JSONResponse, RedirectResponse
-
 from app.db import get_session
-from app.schemas.user import RegistrationRequest, LoginRequest
+from app.schemas.auth import RegistrationRequest, LoginRequest
 from app.services import auth
 from app.config import CLIENT_URL
 
-router = APIRouter(prefix="/user", tags=["user"])
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/registration")

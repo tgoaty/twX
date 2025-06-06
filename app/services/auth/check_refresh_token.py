@@ -1,7 +1,6 @@
 from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.models import User
 from app.services.auth.utils.get_user_dto_and_tokens import get_user_dto_and_tokens
 from app.services.auth.utils.token_utils import validate_refresh_token, find_token

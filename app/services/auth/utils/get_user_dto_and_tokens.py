@@ -1,7 +1,6 @@
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from app.schemas.user import UserDto
+from app.schemas.auth import UserDto
 from app.services.auth.utils.token_utils import generate_tokens, save_token
 
 
