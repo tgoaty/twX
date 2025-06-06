@@ -18,6 +18,16 @@ services:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql+asyncpg://user:password@db:5432/twX
+      URL: http://localhost:8000
+      CLIENT_URL: http://localhost:3000
+      JWT_ACCESS_SECRET: JWT_ACCESS_SECRET
+      JWT_REFRESH_SECRET: JWT_REFRESH_SECRET
+
+#     MAIL_PASSWORD: 12345qwerty
+      MAIL_SMTP_HOST: smtp.mail.ru
+      MAIL_SMTP_PORT: 587
+#     MAIL_EMAIL: example@bk.ru
+
     depends_on:
       - db
 
