@@ -33,7 +33,7 @@ async def registration(
     await session.commit()
     await session.refresh(new_user)
 
-    await send_activation_mail(email, f"{URL}/api/user/activate/{activation_link}")
+    await send_activation_mail(email, f"{URL}/api/auth/activate/{activation_link}")
 
     response = await get_user_dto_and_tokens(session, new_user)
     return response
