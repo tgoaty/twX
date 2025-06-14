@@ -1,93 +1,52 @@
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Cookie, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from starlette.responses import JSONResponse, RedirectResponse
 from app.db import get_session
-from app.schemas.auth import RegistrationRequest, LoginRequest
-from app.services import auth
-from app.config import CLIENT_URL
+from app.schemas.auth import RegistrationScheme, LoginScheme
+from app.services.auth import AuthService
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/registration")
 async def registration(
-    data: RegistrationRequest, session: AsyncSession = Depends(get_session)
+    data: RegistrationScheme,
+    session: AsyncSession = Depends(get_session),
+    service: AuthService = Depends(AuthService),
 ):
-    user_data = await auth.registration(
-        username=data.username,
-        email=data.email,
-        password=data.password,
-        session=session,
-    )
-    response = JSONResponse(
-        content={
-            "access_token": user_data["access_token"],
-            "user": user_data["user"],
-        }
-    )
-    response.set_cookie(
-        key="refresh_token",
-        value=user_data["refresh_token"],
-        httponly=True,
-        max_age=60 * 60 * 24 * 30,
-    )
-    return response
+    return await service.registration(data, session)
 
 
 @router.post("/login")
 async def login(
-    data: LoginRequest,
+    data: LoginScheme,
     session: AsyncSession = Depends(get_session),
+    service: AuthService = Depends(AuthService),
 ):
-    user_data = await auth.login(
-        email=data.email, password=data.password, session=session
-    )
-
-    response = JSONResponse(
-        content={
-            "access_token": user_data["access_token"],
-            "user": user_data["user"],
-        }
-    )
-    response.set_cookie(
-        key="refresh_token",
-        value=user_data["refresh_token"],
-        httponly=True,
-        max_age=60 * 60 * 24 * 30,
-    )
-    return response
+    return await service.login(data, session)
 
 
 @router.post("/logout")
-async def logout(request: Request, session: AsyncSession = Depends(get_session)):
-    refresh_token = request.cookies.get("refresh_token")
-    token = await auth.logout(session, refresh_token)
-    response = JSONResponse(content={"token": token})
-    response.delete_cookie("refresh_token")
-    return response
+async def logout(
+    refresh_token: str = Cookie(...),
+    session: AsyncSession = Depends(get_session),
+    service: AuthService = Depends(AuthService),
+):
+    return await service.logout(refresh_token, session)
 
 
-@router.get("/activate/{link}")
-async def activate_link(link: str, session: AsyncSession = Depends(get_session)):
-    await auth.activate(activation_link=link, session=session)
-    return RedirectResponse(CLIENT_URL)
+@router.get("/activate")
+async def activate_link(
+    token: str = Query(...),
+    session: AsyncSession = Depends(get_session),
+    service: AuthService = Depends(AuthService),
+):
+    return await service.activate(token, session)
 
 
 @router.get("/refresh")
-async def refresh(request: Request, session: AsyncSession = Depends(get_session)):
-    refresh_token = request.cookies.get("refresh_token")
-    new_refresh_token = await auth.check_refresh_token(refresh_token, session=session)
-
-    response = JSONResponse(
-        content={
-            "access_token": new_refresh_token["access_token"],
-            "user": new_refresh_token["user"],
-        }
-    )
-    response.set_cookie(
-        key="refresh_token",
-        value=new_refresh_token["refresh_token"],
-        httponly=True,
-        max_age=60 * 60 * 24 * 30,
-    )
-    return response
+async def refresh(
+    refresh_token: str = Cookie(...),
+    session: AsyncSession = Depends(get_session),
+    service: AuthService = Depends(AuthService),
+):
+    return await service.refresh(refresh_token, session)

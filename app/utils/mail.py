@@ -1,11 +1,11 @@
 from aiosmtplib import send
 from email.message import EmailMessage
-from app.config import MAIL_PASSWORD, MAIL_SMTP_HOST, MAIL_SMTP_PORT, MAIL_EMAIL
+from app.config import settings
 
 
 async def send_activation_mail(to, link):
     message = EmailMessage()
-    message["From"] = MAIL_EMAIL
+    message["From"] = settings.MAIL_EMAIL
     message["To"] = to
     message["Subject"] = "Activation Link"
 
@@ -46,11 +46,11 @@ async def send_activation_mail(to, link):
     try:
         await send(
             message,
-            hostname=MAIL_SMTP_HOST,
-            port=MAIL_SMTP_PORT,
+            hostname=settings.MAIL_SMTP_HOST,
+            port=settings.MAIL_SMTP_PORT,
             start_tls=True,
-            username=MAIL_EMAIL,
-            password=MAIL_PASSWORD,
+            username=settings.MAIL_EMAIL,
+            password=settings.MAIL_PASSWORD,
         )
     except Exception as e:
         raise Exception(f"Failed to send activation mail: {e}")

@@ -14,7 +14,7 @@
 ## useful commands
 
 ### Print this before the first migration:
-`alembic revision --autogenerate -m "create tables"`
+alembic revision --autogenerate -m "create tables"
 
 ### Chek table values
 `docker exec -i twx-db-1 psql -U user -d twX -c 'SELECT * FROM "tokens";'`
