@@ -39,3 +39,7 @@ class LoginScheme(BaseModel):
 class TokensScheme(BaseModel):
     access_token: str
     refresh_token: str
+
+
+class SuccessResponse(BaseModel):
+    message: str

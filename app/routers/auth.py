@@ -1,13 +1,18 @@
 from fastapi import APIRouter, Depends, Cookie, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.db import get_session
-from app.schemas.auth import RegistrationScheme, LoginScheme
+from app.core.database import get_session
+from app.schemas.auth import (
+    RegistrationScheme,
+    LoginScheme,
+    UserDtoScheme,
+    SuccessResponse,
+)
 from app.services.auth import AuthService
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("/registration")
+@router.post("/registration", response_model=SuccessResponse)
 async def registration(
     data: RegistrationScheme,
     session: AsyncSession = Depends(get_session),
@@ -16,7 +21,7 @@ async def registration(
     return await service.registration(data, session)
 
 
-@router.post("/login")
+@router.post("/login", response_model=UserDtoScheme)
 async def login(
     data: LoginScheme,
     session: AsyncSession = Depends(get_session),
@@ -25,7 +30,7 @@ async def login(
     return await service.login(data, session)
 
 
-@router.post("/logout")
+@router.post("/logout", response_model=SuccessResponse)
 async def logout(
     refresh_token: str = Cookie(...),
     session: AsyncSession = Depends(get_session),
@@ -34,7 +39,7 @@ async def logout(
     return await service.logout(refresh_token, session)
 
 
-@router.get("/activate")
+@router.get("/activate", response_model=None)
 async def activate_link(
     token: str = Query(...),
     session: AsyncSession = Depends(get_session),
@@ -43,7 +48,7 @@ async def activate_link(
     return await service.activate(token, session)
 
 
-@router.get("/refresh")
+@router.get("/refresh", response_model=UserDtoScheme)
 async def refresh(
     refresh_token: str = Cookie(...),
     session: AsyncSession = Depends(get_session),

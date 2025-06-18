@@ -1,7 +1,7 @@
 from fastapi.encoders import jsonable_encoder
 from jose import jwt
 from datetime import datetime, timedelta, timezone
-from app.config import settings
+from app.core.config import settings
 from app.schemas.auth import UserDtoScheme, TokensScheme, TokenPayloadScheme
 
 

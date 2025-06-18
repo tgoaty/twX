@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
 from app.routers import router
-from app.handlers import (
+from app.core.exceptions import (
     http_exception_handler,
     validation_exception_handler,
     global_exception_handler,

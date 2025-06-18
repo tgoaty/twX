@@ -8,7 +8,7 @@ from app.models import User
 from app.schemas.auth import RegistrationScheme, LoginScheme, UserDtoScheme
 from app.utils.security import hash_password, verify_password
 from app.utils.mail import send_activation_mail
-from app.config import settings
+from app.core.config import settings
 from app.cruds.user import UserCRUD
 from app.utils.token_utils import validate_refresh_token, generate_tokens
 

@@ -3,7 +3,7 @@ import sys
 from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 from alembic import context
-from app.config import DATABASE_URL
+from app.core.config import settings
 from app.models import *  # noqa F403
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -11,9 +11,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 config = context.config
 fileConfig(config.config_file_name)
-if not DATABASE_URL:
-    raise RuntimeError("DATABASE_URL not set")
-DATABASE_URL = DATABASE_URL.replace("postgresql+asyncpg://", "postgresql://")
+
+DATABASE_URL = settings.DATABASE_URL.replace("postgresql+asyncpg://", "postgresql://")
 
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL not set in .env")

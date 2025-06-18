@@ -11,9 +11,11 @@ services:
       - "5432:5432"
 
   web:
-    build: .
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     volumes:
-      - .:/app
+      - ..:/app
     ports:
       - "8000:8000"
     environment:
