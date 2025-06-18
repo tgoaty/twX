@@ -1,7 +1,6 @@
 from uuid import UUID
 
 from sqlalchemy import select
-
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Token
@@ -23,10 +22,10 @@ class TokenCRUD:
         return result.scalars().first()
 
     async def update_token(
-        self,
-        user_sid: UUID,
-        tokens: TokensScheme,
-        session: AsyncSession,
+            self,
+            user_sid: UUID,
+            tokens: TokensScheme,
+            session: AsyncSession,
     ):
         result = await session.execute(select(Token).where(Token.user_sid == user_sid))
         token_data = result.scalars().first()

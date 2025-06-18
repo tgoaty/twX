@@ -1,8 +1,10 @@
 from datetime import datetime
 from typing import Optional
-from .base import Base, SIDMixin, TimestampMixin
-from sqlalchemy.orm import Mapped, mapped_column
+
 from sqlalchemy import String, Boolean, DateTime, func
+from sqlalchemy.orm import Mapped, mapped_column
+
+from .base import Base, SIDMixin, TimestampMixin
 
 
 class User(Base, SIDMixin, TimestampMixin):
